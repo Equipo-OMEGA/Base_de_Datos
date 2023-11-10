@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3307
--- Tiempo de generación: 20-10-2023 a las 02:21:16
+-- Tiempo de generación: 09-11-2023 a las 05:03:09
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.1.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `pipipiip`
+-- Base de datos: `inventario`
 --
 
 -- --------------------------------------------------------
@@ -29,14 +29,13 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `articulo` (
   `id_Articulo` int(11) NOT NULL,
-  `nombre` varchar(45) NOT NULL,
-  `descripcion` varchar(80) NOT NULL,
-  `costo` double NOT NULL,
-  `precio_mayoreo` double NOT NULL,
-  `existencia_Almacen` int(50) NOT NULL,
-  `existencia_PisoVenta` int(50) NOT NULL,
-  `tipo_articulo_id_TipoArticulo` int(11) NOT NULL,
-  `proveedor_id_Provedor` int(10) NOT NULL
+  `nombre` varchar(100) NOT NULL,
+  `descripcion` varchar(10) NOT NULL,
+  `costo` varchar(10) NOT NULL,
+  `precio_mayoreo` varchar(10) NOT NULL,
+  `existencia_Almacen` varchar(10) NOT NULL,
+  `existencia_PisoVenta` varchar(10) NOT NULL,
+  `TipoArticulo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -48,7 +47,7 @@ CREATE TABLE `articulo` (
 CREATE TABLE `proveedor` (
   `id_Provedor` int(10) NOT NULL,
   `nombre` varchar(25) NOT NULL,
-  `callle` varchar(60) NOT NULL,
+  `calle` varchar(60) NOT NULL,
   `colonia` varchar(60) NOT NULL,
   `estado` varchar(60) NOT NULL,
   `ciudad` varchar(60) NOT NULL,
@@ -60,8 +59,8 @@ CREATE TABLE `proveedor` (
 -- Volcado de datos para la tabla `proveedor`
 --
 
-INSERT INTO `proveedor` (`id_Provedor`, `nombre`, `callle`, `colonia`, `estado`, `ciudad`, `municipio`, `codigo_postal`) VALUES
-(1, 'Luis Arriaga', 'Perseo', 'Cruz del Sur', 'Aguascalientes', 'Aguscalientes', 'Aguscalientes', '20015'),
+INSERT INTO `proveedor` (`id_Provedor`, `nombre`, `calle`, `colonia`, `estado`, `ciudad`, `municipio`, `codigo_postal`) VALUES
+(1, 'Luis Arriaga', 'Perseo', 'Cruz del sur', 'Aguascalientes', 'Aguascalientes', 'Aguascalientes', '20015'),
 (2, 'Angel Contreras', 'Juarez', 'Del Carmen', 'Aguascalientes', 'Aguascalientes', 'Aguascalientes', '25510'),
 (3, 'Carmen Torres', 'Amsterdam', 'Tlatelolco', 'Estado de Mexico', 'Cuidad de Mexico', 'Mexico', '01000');
 
@@ -115,9 +114,8 @@ INSERT INTO `usuario` (`id_usuario`, `nombre_completo`, `correo_electronico`, `c
 -- Indices de la tabla `articulo`
 --
 ALTER TABLE `articulo`
-  ADD PRIMARY KEY (`id_Articulo`,`tipo_articulo_id_TipoArticulo`,`proveedor_id_Provedor`),
-  ADD KEY `fk_articulo_tipo_articulo_idx` (`tipo_articulo_id_TipoArticulo`),
-  ADD KEY `fk_articulo_proveedor1_idx` (`proveedor_id_Provedor`);
+  ADD PRIMARY KEY (`id_Articulo`),
+  ADD KEY `TipoArticulo` (`TipoArticulo`);
 
 --
 -- Indices de la tabla `proveedor`
@@ -145,13 +143,13 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `articulo`
 --
 ALTER TABLE `articulo`
-  MODIFY `id_Articulo` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_Articulo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
-  MODIFY `id_Provedor` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_Provedor` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_articulo`
@@ -173,8 +171,7 @@ ALTER TABLE `usuario`
 -- Filtros para la tabla `articulo`
 --
 ALTER TABLE `articulo`
-  ADD CONSTRAINT `fk_articulo_proveedor1` FOREIGN KEY (`proveedor_id_Provedor`) REFERENCES `proveedor` (`id_Provedor`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_articulo_tipo_articulo` FOREIGN KEY (`tipo_articulo_id_TipoArticulo`) REFERENCES `tipo_articulo` (`id_TipoArticulo`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `articulo_ibfk_1` FOREIGN KEY (`TipoArticulo`) REFERENCES `tipo_articulo` (`id_TipoArticulo`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
